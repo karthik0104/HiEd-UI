@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/styles';
-import { AppBar, CssBaseline, Toolbar, useMediaQuery, Backdrop, CircularProgress, Button } from '@material-ui/core';
+import { AppBar, CssBaseline, Toolbar, useMediaQuery, Backdrop, CircularProgress, Button, SnackbarContent, Alert } from '@material-ui/core';
 
 // third-party
 import clsx from 'clsx';
@@ -81,6 +81,22 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 5000,
         left: 0,
         top: 0
+    },
+    closeButton: {
+        color: "red",
+        fontSize: '18px',
+        position: 'absolute',
+        top: '0',
+        right: '0',
+        margin: '30px',
+        backgroundColor: theme.palette.secondary.dark
+    },
+    snackbar: {
+        position: 'absolute',
+        horzontal: 'center',
+        top: '0',
+        width: '40%',
+        marginLeft: '30%'
     }
 }));
 
@@ -98,6 +114,12 @@ const MainLayout = () => {
         dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
     };
 
+    const action = (
+        <Button color="primary" size="small">
+          CLOSE
+        </Button>
+      );
+
     React.useEffect(() => {
         dispatch({ type: SET_MENU, opened: !matchDownMd });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +130,18 @@ const MainLayout = () => {
             <Backdrop className={classes.backdrop}
             open={false}
             >
+                <div className={classes.closeButton}>
+                    <Button>X Close</Button>
+                </div>
                 <CircularProgress color="inherit" />
+                <iframe src='https://www.youtube.com/embed/E7wJTI-1dvQ'
+                    width= '800'
+                    height= '500'
+                    frameborder='5'
+                    allow='autoplay; encrypted-media'
+                    allowfullscreen
+                    title='video' />
+                <Button>Close</Button>
             </Backdrop>
             <CssBaseline />
             {/* header */}
@@ -121,6 +154,18 @@ const MainLayout = () => {
             >
                 <Toolbar>
                     <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
+                    <div className={classes.snackbar}>
+                    <SnackbarContent
+                        open= {true}
+                        anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "center"
+                         }}
+                         message="You can access the How-To Video anytime from the Sidebar menu"
+                         action={action}
+                    >
+                    </SnackbarContent>
+                    </div>
                 </Toolbar>
             </AppBar>
 

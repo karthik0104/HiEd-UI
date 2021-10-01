@@ -137,7 +137,10 @@ const useStyles = makeStyles((theme) => ({
     fabdiv: {
         marginLeft: '0',
         marginTop: '10px',
-        position: 'relative'
+        position: 'absolute',
+        right: '0',
+        top: '0',
+        zIndex: '5000'
     },
     fab: {
         margin: '5px'

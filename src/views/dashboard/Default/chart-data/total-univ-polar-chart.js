@@ -74,4 +74,130 @@ const polarChartData = {
         }
     ]
 };
+
+const polarChartData2 = {
+          
+    series: [{
+      name: 'New York University',
+      data: [[10, 25, 80]]
+    },
+    {
+      name: 'California University',
+      data: [[90, 25, 70]]
+    },
+    {
+        name: 'New York University',
+        data: [[160, 25, 50]]
+    },
+    {
+        name: 'New York University',
+        data: [[210, 25, 50]]
+      },
+      {
+        name: 'California University',
+        data: [[260, 25, 70]]
+      }
+    ],
+    options: {
+      chart: {
+          height: 350,
+          type: 'bubble',
+      },
+      dataLabels: {
+          enabled: true
+      },
+      fill: {
+          opacity: 0.8
+      },
+      xaxis: {
+          show: false,
+          tickAmount: 12,
+          type: 'category',
+          min: 0,
+          max: 330,
+          labels: {
+              show: false
+          },
+      },
+      yaxis: {
+          show: false,
+          max: 30,
+          min: 20
+      },
+      legend: {
+        show: true,
+        fontSize: '10px',
+        fontFamily: `'Roboto', sans-serif`,
+        position: 'right',
+        offsetX: 20,
+        labels: {
+            useSeriesColors: true
+        },
+        markers: {
+            width: 16,
+            height: 16,
+            radius: 5
+        },
+        itemMargin: {
+            horizontal: 15,
+            vertical: 8
+        }
+    },
+    grid: {
+        show: false
+    }
+    },
+};
+
+const polarChartData3 = {
+          
+    series: [10, 25, 35, 45, 85],
+    options: {
+      chart: {
+          height: 350,
+          type: 'polarArea',
+      },
+      dataLabels: {
+          enabled: false
+      },
+      fill: {
+          opacity: 0.8
+      },
+      xaxis: {
+          show: false,
+          tickAmount: 12,
+          type: 'category',
+          labels: {
+              show: false
+          },
+      },
+      yaxis: {
+          show: false
+      },
+      legend: {
+        show: true,
+        fontSize: '12px',
+        fontFamily: `'Roboto', sans-serif`,
+        position: 'right',
+        offsetX: 20,
+        labels: {
+            useSeriesColors: true
+        },
+        markers: {
+            width: 16,
+            height: 16,
+            radius: 5
+        },
+        itemMargin: {
+            horizontal: 0,
+            vertical: 8
+        }
+    },
+    grid: {
+        show: false
+    },
+    labels: ['New York University', 'Chicago University', 'Columbia University', 'Penn State University', 'Illinois University']
+    },
+};
+
 export default polarChartData;

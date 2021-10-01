@@ -7,7 +7,6 @@ import { Grid, MenuItem, TextField, Typography, useTheme } from '@material-ui/co
 // third-party
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
-import ReactApexChart from 'react-apexcharts';
 
 // project imports
 import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
@@ -19,7 +18,6 @@ import { makeStyles } from '@material-ui/styles';
 // chart data
 import chartData from './chart-data/total-growth-bar-chart';
 import polarChartData from './chart-data/total-univ-polar-chart';
-import ReactBubbleChart from 'react-bubble-chart';
 
 const status = [
     {
@@ -39,8 +37,7 @@ const status = [
 // style constant
 const useStyles = makeStyles((theme) => ({
     chartcard: {
-        boxShadow: '0.5px 0.5px 0.5px 0.5px',
-        backgroundColor: theme.palette.grey[50]
+        boxShadow: '0.5px 0.5px 0.5px 0.5px'
     }
 }));
 
@@ -99,25 +96,6 @@ const TotalGrowthBarChart = ({ isLoading }) => {
         }
     }, [primary200, primaryDark, secondaryMain, secondaryLight, primary, grey200, isLoading, grey500]);*/
 
-    const colorLegend = [
-        //reds from dark to light
-        {color: "#67000d", text: 'Negative', textColor: "#ffffff"}, "#a50f15", "#cb181d", "#ef3b2c", "#fb6a4a", "#fc9272", "#fcbba1", "#fee0d2",
-        //neutral grey
-        {color: "#f0f0f0", text: 'Neutral'},
-        // blues from light to dark
-        "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#4292c6", "#2171b5", "#08519c", {color: "#08306b", text: 'Positive', textColor: "#ffffff"}
-      ];
-
-    const data = [{"_id": "1", "value": 65, "sentiment": 2, "selected": true}];
-
-    const okay = data.map(d => ({
-        _id: d._id,
-        value: d.value,
-        colorValue: d.sentiment,
-        selected: d.selected
-      }));
-
-
     return (
         <>
             {isLoading ? (
@@ -130,7 +108,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="h3">Trending Universities (# Plans)</Typography>
+                                            <Typography variant="h3">Universities With Highest Plans This Week</Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -151,7 +129,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                            <Chart options={polarChartData.options} series={polarChartData.series} type="bar" height={250} />
+                            <Chart {...polarChartData} />
                         </Grid>
                     </Grid>
                 </MainCard>

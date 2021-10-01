@@ -137,11 +137,14 @@ const useStyles = makeStyles((theme) => ({
     fabdiv: {
         marginLeft: '0',
         marginTop: '10px',
-        position: 'relative'
+        position: 'absolute',
+        right: '0',
+        top: '0',
+        zIndex: '5000'
     },
     fab: {
         margin: '5px',
-        backgroundColor: theme.palette.secondary[800]
+        backgroundColor: theme.palette.secondary[200]
     },
     stats: {
         fontSize: '10px',
