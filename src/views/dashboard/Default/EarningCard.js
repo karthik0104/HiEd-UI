@@ -6,7 +6,9 @@ import { makeStyles } from '@material-ui/styles';
 import { Avatar, fabClasses, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton'
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import UtilsForms from './../../utilities/Forms';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -155,7 +157,7 @@ const useStyles = makeStyles((theme) => ({
     hrtop: {
         color: 'orange',
         borderColor: 'orange'
-    }
+    },
 }));
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
@@ -171,6 +173,10 @@ const EarningCard = ({ isLoading }) => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const addClick = name => () => {
+        console.log(name);
     };
 
     return (
@@ -221,7 +227,7 @@ const EarningCard = ({ isLoading }) => {
                                 <Grid item>
                                     <div className={classes.fabdiv}>
                                         <Fab color="secondary" aria-label="add" className={classes.fab}>
-                                            <AddIcon />
+                                            <UtilsForms />
                                         </Fab>
                                         <Fab color="secondary" aria-label="add" className={classes.fab}>
                                             <VisibilityIcon>View</VisibilityIcon>
