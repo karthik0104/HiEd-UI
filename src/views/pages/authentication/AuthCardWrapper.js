@@ -36,7 +36,7 @@ const AuthCardWrapper = ({ children, ...other }) => {
     const classes = useStyles();
 
     return (
-        <MainCard className={classes.card} contentClass={classes.content} {...other}>
+        <MainCard className={classes.card} contentClass={classes.content} {...other} elevation={16}>
             {children}
         </MainCard>
     );

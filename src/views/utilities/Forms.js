@@ -9,6 +9,12 @@ import MainCard from 'ui-component/cards/MainCard';
 import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography, Autocomplete, TextField } from '@material-ui/core';
 import { gridSpacing } from 'store/constant';
 
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+
+//import Tab from '@material-ui/core';
+//import { TabList, TabPanel, TabContext } from '@material-ui/lab';
+
 import Fab from '@material-ui/core/Fab';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -59,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         marginTop: '60px',
-        marginLeft: '30px'
+        marginLeft: '30px',
     },
     select: {
         width: "150px",
@@ -73,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
         outline: 'none',
     },
     maincard: {
+        display: 'block',
     },
     closeButton: {
         position: 'absolute',
@@ -163,7 +170,16 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.dark,
         paddingLeft: '25px',
         paddingRight: '25px',
+        paddingTop: '7px',
+        paddingBottom: '7px',
         color: 'white'
+    },
+    tabs: {
+        fontFamily:'arial',
+        margin: '0 auto',
+        width:'70%',
+        textAlign: 'center',
+        marginTop: '15vh'
     }
 }));
 
@@ -201,6 +217,11 @@ const UtilsForms = ({ isLoading }) => {
 
     const [state, setState] = useState({ open: false });
     const [startDate, setStartDate] = useState(new Date());
+    const [value, setValue] = React.useState('1');
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     function handleOpen() {
         setState({ open: true });
@@ -226,7 +247,7 @@ const UtilsForms = ({ isLoading }) => {
             left: '50%',
             top: '50%',
             transform: 'translate(-50%, -50%)',
-            zIndex: 7000
+            zIndex: 7000,
         };
     }
 
@@ -242,6 +263,7 @@ const UtilsForms = ({ isLoading }) => {
                 aria-describedby="simple-modal-description"
                 open={state.open}
                 onClose={handleClose}
+                scrollable={true}
             >
                 <div style={getModalStyle()} className={classes.paper}>
                     <MainCard className={classes.maincard} elevation={16}>
@@ -262,10 +284,27 @@ const UtilsForms = ({ isLoading }) => {
                                     <img src={bulb} className={classes.bulbClass}></img>
                                 </div>
                                 <div className={classes.createPlanText2}>
-                                    A plan is an interactive feature which helps you create your <u>Personal Calendar</u> for scheduling
+                                    A plan helps you create your <u>Personal Calendar</u> for scheduling
                                     your application-related activities such as SOP creation,
-                                    LOR requests, applying on University website and much more. Go ahead and create one !
+                                    LOR requests, and much more. Go ahead and create one !
                                 </div>
+                            </div>
+
+                            <div>
+                            <Tabs>
+                                <TabList>
+                                    <Tab>Basic</Tab>
+                                    <Tab>Advanced</Tab>
+                                    <Tab>Review & Create</Tab>
+                                </TabList>
+
+                                <TabPanel>
+                                    <h2></h2>
+                                </TabPanel>
+                                <TabPanel>
+                                    <h2></h2>
+                                </TabPanel>
+                            </Tabs>
                             </div>
 
                             <form onSubmit={formik.handleSubmit} className={classes.form}>
