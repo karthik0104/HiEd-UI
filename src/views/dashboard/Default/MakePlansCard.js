@@ -8,11 +8,11 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton'
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import UtilsForms from './../../utilities/Forms';
+import CreatePlanForm from '../../utilities/CreatePlanForm';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
+import SkeletonMakePlansCard from 'ui-component/cards/Skeleton/MakePlansCard';
 
 // assets
 import EarningIcon from 'assets/images/icons/earning.svg';
@@ -26,12 +26,12 @@ import ArchiveTwoToneIcon from '@material-ui/icons/ArchiveOutlined';
 // style constant
 const useStyles = makeStyles((theme) => ({
     card: {
-        backgroundColor: theme.palette.secondary.dark,
+        backgroundColor: "#fff",
         color: '#fff',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: '1px 1px 1px 1px grey',
-        opacity: '85%',
+        boxShadow: theme.shadows[5],
+        opacity: '90%',
         '&:after': {
             content: '""',
             position: 'absolute',
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
             height: '210px',
             background: theme.palette.secondary[800],
             borderRadius: '50%',
+            opacity: 0.1,
             top: '-85px',
             right: '-95px',
             [theme.breakpoints.down('xs')]: {
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
             borderRadius: '50%',
             top: '-125px',
             right: '-15px',
-            opacity: 0.5,
+            opacity: 0.2,
             [theme.breakpoints.down('xs')]: {
                 top: '-155px',
                 right: '-70px'
@@ -108,7 +109,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1.25rem',
         fontWeight: 'bold',
         paddingTop: '10px',
-        opacity: '90%'
+        opacity: '100%',
+        color: theme.palette.secondary.dark
     },
     hr: {
         width: '260px',
@@ -134,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
         color: 'black',
         backgroundColor: theme.palette.secondary.light,
         borderRadius: '5px',
-        boxShadow: '1px 1px 1px 1px'
+        boxShadow: '0.2px 0.2px 0.2px 0.2px grey'
     },
     fabdiv: {
         marginLeft: '0',
@@ -142,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         right: '0',
         top: '0',
-        zIndex: '5000'
+        zIndex: '500'
     },
     fab: {
         margin: '5px',
@@ -152,17 +154,17 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '10px',
         fontWeight: 'bold',
         letterSpacing: '1px',
-        color: 'orange'
+        color: "black"
     },
     hrtop: {
-        color: 'orange',
-        borderColor: 'orange'
+        color: 'black',
+        borderColor: 'black'
     },
 }));
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const EarningCard = ({ isLoading }) => {
+const MakePlansCard = ({ isLoading }) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -182,7 +184,7 @@ const EarningCard = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
-                <SkeletonEarningCard />
+                <SkeletonMakePlansCard />
             ) : (
                 <MainCard border={false} className={classes.card} contentClass={classes.content}>
                     <Grid container direction="row">
@@ -227,7 +229,7 @@ const EarningCard = ({ isLoading }) => {
                                 <Grid item>
                                     <div className={classes.fabdiv}>
                                         <Fab color="secondary" aria-label="add" className={classes.fab}>
-                                            <UtilsForms />
+                                            <CreatePlanForm />
                                         </Fab>
                                         <Fab color="secondary" aria-label="add" className={classes.fab}>
                                             <VisibilityIcon>View</VisibilityIcon>
@@ -243,8 +245,8 @@ const EarningCard = ({ isLoading }) => {
     );
 };
 
-EarningCard.propTypes = {
+MakePlansCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default EarningCard;
+export default MakePlansCard;

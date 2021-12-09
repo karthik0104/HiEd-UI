@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Avatar, fabClasses, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 // project imports
@@ -21,46 +22,18 @@ import FileCopyTwoToneIcon from '@material-ui/icons/FileCopyOutlined';
 import PictureAsPdfTwoToneIcon from '@material-ui/icons/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@material-ui/icons/ArchiveOutlined';
 
+import ProgressBar from "@ramonak/react-progress-bar";
+import AttachFile from "@material-ui/icons/AttachFile";
+
 // style constant
 const useStyles = makeStyles((theme) => ({
     card: {
-        //backgroundColor: theme.palette.primary[800],
-        backgroundColor: "#fafafa",
+        backgroundColor: "#fff",
         color: '#fff',
         overflow: 'hidden',
         position: 'relative',
         boxShadow: theme.shadows[5],
         opacity: '90%',
-        '&:after': {
-            content: '""',
-            position: 'absolute',
-            width: '210px',
-            height: '210px',
-            background: theme.palette.primary.dark,
-            borderRadius: '50%',
-            top: '-85px',
-            right: '-95px',
-            opacity: 0.1,
-            [theme.breakpoints.down('xs')]: {
-                top: '-105px',
-                right: '-140px'
-            }
-        },
-        '&:before': {
-            content: '""',
-            position: 'absolute',
-            width: '210px',
-            height: '210px',
-            background: theme.palette.secondary[200],
-            borderRadius: '50%',
-            top: '-125px',
-            right: '-15px',
-            opacity: 0.2,
-            [theme.breakpoints.down('xs')]: {
-                top: '-155px',
-                right: '-70px'
-            }
-        }
     },
     content: {
         padding: '20px !important'
@@ -68,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         ...theme.typography.commonAvatar,
         ...theme.typography.largeAvatar,
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.secondary[800],
         marginTop: '8px'
     },
     avatarRight: {
         ...theme.typography.commonAvatar,
         ...theme.typography.mediumAvatar,
-        backgroundColor: theme.palette.primary.dark,
-        color: theme.palette.primary[200],
+        backgroundColor: theme.palette.secondary.dark,
+        color: theme.palette.secondary[200],
         zIndex: 1
     },
     cardHeading: {
@@ -109,14 +82,14 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold',
         paddingTop: '10px',
         opacity: '100%',
-        color: theme.palette.primary.dark
+        color: theme.palette.secondary.dark
     },
     hr: {
-        width: '260px',
-        maxWidth: '260px',
+        width: '275px',
+        maxWidth: '275px',
         borderWidth: '2px',
-        borderColor: theme.palette.primary.light,
-        opacity: '30%'
+        borderColor: theme.palette.secondary[200],
+        opacity: '50%'
     },
     questionmark: {
         display: 'flex',
@@ -133,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
         letterSpacing: '0.5px',
         fontWeight: 'bold',
         color: 'black',
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.secondary.light,
         borderRadius: '5px',
         boxShadow: '0.2px 0.2px 0.2px 0.2px grey'
     },
@@ -143,26 +116,68 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         right: '0',
         top: '0',
-        zIndex: '5000'
+        zIndex: '500'
     },
     fab: {
-        margin: '5px'
+        margin: '5px',
+        backgroundColor: theme.palette.secondary[200]
     },
     stats: {
         fontSize: '10px',
         fontWeight: 'bold',
         letterSpacing: '1px',
-        color: 'darkorange'
+        color: "black"
     },
     hrtop: {
-        color: 'orange',
-        borderColor: 'orange'
+        color: 'black',
+        borderColor: 'black'
+    },
+    planName: {
+        backgroundColor: theme.palette.primary.light,
+        width: '275px',
+        maxWidth: '275px',
+        color: 'black',
+        paddingLeft: '20px',
+        paddingTop: '1px',
+        paddingBottom: '1px',
+        borderRadius: '10px',
+        fontWeight: 'bold',
+    },
+    dayspending: {
+        color: 'black',
+        marginLeft: '10px',
+        textAlign: 'center'
+    },
+    dayspending2: {
+        color: 'black',
+        marginLeft: '40px',
+        textAlign: 'center',
+    },
+    dayspending3: {
+        color: 'black',
+        marginLeft: '40px',
+        textAlign: 'center',
+        marginTop: '12px',
+        backgroundColor: "#F9EBEA",
+        padding: '15px',
+        borderRadius: '10px',
+    },
+    pb: {
+        width: '300px',
+        maxWidth: '300px'
+    },
+    pbText: {
+        color: 'black'
+    },
+    priority: {
+        color: 'red',
     }
+
 }));
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const UniversityCard = ({ isLoading }) => {
+const PlanCard = ({ isLoading, planName }) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -175,6 +190,10 @@ const UniversityCard = ({ isLoading }) => {
         setAnchorEl(null);
     };
 
+    const addClick = name => () => {
+        console.log(name);
+    };
+
     return (
         <>
             {isLoading ? (
@@ -184,25 +203,18 @@ const UniversityCard = ({ isLoading }) => {
                     <Grid container direction="row">
                         <Grid container justifyContent="space-between">
                             <Grid item>
-                                <div className={classes.stats}>You have 5 plans in progress</div>
-                                <hr className={classes.hrtop} />
+                                <div className={classes.priority}><h4>High Priority</h4></div>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid container direction="row">
-                        <Grid item>
-                            <Grid container justifyContent="space-between">
-                                <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatar}>
-                                        <img src={EarningIcon} alt="Notification" />
-                                    </Avatar>
-                                </Grid>
-                                <Grid item>
-                                    <div className={classes.cardTitle}>Explore Universities</div>
-                                </Grid>
+                        <Grid container justifyContent="space-between">
+                            <Grid item>
+                                <div className={classes.planName}><h4>{planName}</h4></div>
                             </Grid>
                         </Grid>
                     </Grid>
+                    <br />
                     <Grid container direction="column">
                         <Grid item>
                             <Grid container justifyContent="space-between">
@@ -216,20 +228,62 @@ const UniversityCard = ({ isLoading }) => {
                         <Grid item>
                             <Grid container justifyContent="space-between">
                                 <Grid item>
-                                    <div className={classes.cardText}>
-                                        Get cutoff, fees, and other University details at yoru fingertips !
+                                    <div className={classes.dayspending}>
+                                        <h4>Spring 2021</h4>
+                                        <div>Term</div>
                                     </div>
                                 </Grid>
-                                
+                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Grid container justifyContent="space-between">
+                                <Grid item>
+                                    <div className={classes.dayspending2}>
+                                        <h4>Document Upload</h4>
+                                        <div>Stage</div>
+                                    </div>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item>
-                        <div className={classes.fabdiv}>
-                            <Fab color="primary" aria-label="add" className={classes.fab}>
-                                <VisibilityIcon>View</VisibilityIcon>
-                            </Fab>
-                        </div>
+                    <br />
+                    <hr />
+                    <Grid container direction="row">
+
+                        <Grid item>
+                            <Grid container justifyContent="space-between">
+                                <Grid item>
+                                    <div className={classes.dayspending}>
+                                        <h4>3 days</h4>
+                                        <div>Days Pending</div>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Grid container justifyContent="space-between">
+                                <Grid item>
+                                    <div className={classes.dayspending3}>
+                                        <AttachFile />
+                                        <div>Attachments</div>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <br />
+                    <hr />
+                    <div class={classes.pbText}><h3>Plan Completion</h3></div>
+                    <Grid container direction="row">
+                        <Grid item>
+                            <Grid container justifyContent="space-between">
+                                <Grid item>
+                                    <div className={classes.pb}>
+                                        <ProgressBar completed={60} bgColor="#2874A6" />
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </MainCard>
             )}
@@ -237,8 +291,8 @@ const UniversityCard = ({ isLoading }) => {
     );
 };
 
-UniversityCard.propTypes = {
+PlanCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default UniversityCard;
+export default PlanCard;

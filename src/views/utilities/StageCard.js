@@ -6,11 +6,12 @@ import { makeStyles } from '@material-ui/styles';
 import { Avatar, fabClasses, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
+import SkeletonMakePlansCard from 'ui-component/cards/Skeleton/MakePlansCard';
 
 // assets
 import EarningIcon from 'assets/images/icons/earning.svg';
@@ -21,44 +22,18 @@ import FileCopyTwoToneIcon from '@material-ui/icons/FileCopyOutlined';
 import PictureAsPdfTwoToneIcon from '@material-ui/icons/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@material-ui/icons/ArchiveOutlined';
 
+import ProgressBar from "@ramonak/react-progress-bar";
+import AttachFile from "@material-ui/icons/AttachFile";
+
 // style constant
 const useStyles = makeStyles((theme) => ({
     card: {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: "#fff",
         color: '#fff',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: '1px 1px 1px 1px grey',
-        opacity: '85%',
-        '&:after': {
-            content: '""',
-            position: 'absolute',
-            width: '210px',
-            height: '210px',
-            background: theme.palette.primary[800],
-            borderRadius: '50%',
-            top: '-85px',
-            right: '-95px',
-            [theme.breakpoints.down('xs')]: {
-                top: '-105px',
-                right: '-140px'
-            }
-        },
-        '&:before': {
-            content: '""',
-            position: 'absolute',
-            width: '210px',
-            height: '210px',
-            background: theme.palette.primary[800],
-            borderRadius: '50%',
-            top: '-125px',
-            right: '-15px',
-            opacity: 0.5,
-            [theme.breakpoints.down('xs')]: {
-                top: '-155px',
-                right: '-70px'
-            }
-        }
+        boxShadow: theme.shadows[5],
+        opacity: '90%',
     },
     content: {
         padding: '20px !important'
@@ -66,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         ...theme.typography.commonAvatar,
         ...theme.typography.largeAvatar,
-        backgroundColor: theme.palette.primary[800],
+        backgroundColor: theme.palette.secondary[800],
         marginTop: '8px'
     },
     avatarRight: {
         ...theme.typography.commonAvatar,
         ...theme.typography.mediumAvatar,
-        backgroundColor: theme.palette.primary.dark,
-        color: theme.palette.primary[200],
+        backgroundColor: theme.palette.secondary.dark,
+        color: theme.palette.secondary[200],
         zIndex: 1
     },
     cardHeading: {
@@ -106,11 +81,12 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1.25rem',
         fontWeight: 'bold',
         paddingTop: '10px',
-        opacity: '90%'
+        opacity: '100%',
+        color: theme.palette.secondary.dark
     },
     hr: {
-        width: '260px',
-        maxWidth: '260px',
+        width: '275px',
+        maxWidth: '275px',
         borderWidth: '2px',
         borderColor: theme.palette.secondary[200],
         opacity: '50%'
@@ -132,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
         color: 'black',
         backgroundColor: theme.palette.secondary.light,
         borderRadius: '5px',
-        boxShadow: '1px 1px 1px 1px'
+        boxShadow: '0.2px 0.2px 0.2px 0.2px grey'
     },
     fabdiv: {
         marginLeft: '0',
@@ -140,26 +116,70 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         right: '0',
         top: '0',
-        zIndex: '5000'
+        zIndex: '500'
     },
     fab: {
-        margin: '5px'
+        margin: '5px',
+        backgroundColor: theme.palette.secondary[200]
     },
     stats: {
         fontSize: '10px',
         fontWeight: 'bold',
         letterSpacing: '1px',
-        color: 'yellow'
+        color: "black"
     },
     hrtop: {
-        color: 'yellow',
-        borderColor: 'yellow'
+        color: 'black',
+        borderColor: 'black'
+    },
+    planName: {
+        backgroundColor: theme.palette.primary.light,
+        width: '275px',
+        maxWidth: '275px',
+        color: 'black',
+        paddingLeft: '20px',
+        paddingTop: '1px',
+        paddingBottom: '1px',
+        borderRadius: '10px',
+        fontWeight: 'bold',
+        textAlign: 'left'
+    },
+    dayspending: {
+        color: 'black',
+        marginLeft: '10px',
+        textAlign: 'center'
+    },
+    dayspending2: {
+        color: 'black',
+        marginLeft: '40px',
+        textAlign: 'center',
+    },
+    dayspending3: {
+        color: 'black',
+        marginLeft: '40px',
+        textAlign: 'center',
+        marginTop: '12px',
+        backgroundColor: "#F9EBEA",
+        padding: '15px',
+        borderRadius: '10px',
+    },
+    pb: {
+        width: '300px',
+        maxWidth: '300px'
+    },
+    pbText: {
+        color: 'black',
+        textAlign: 'left'
+    },
+    priority: {
+        color: 'red',
     }
+
 }));
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const EarningCard = ({ isLoading }) => {
+const PlanCard = ({ isLoading }) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -172,31 +192,20 @@ const EarningCard = ({ isLoading }) => {
         setAnchorEl(null);
     };
 
+    const addClick = name => () => {
+        console.log(name);
+    };
+
     return (
         <>
             {isLoading ? (
-                <SkeletonEarningCard />
+                <SkeletonMakePlansCard />
             ) : (
                 <MainCard border={false} className={classes.card} contentClass={classes.content}>
                     <Grid container direction="row">
                         <Grid container justifyContent="space-between">
                             <Grid item>
-                                <div className={classes.stats}>You have 5 plans in progress</div>
-                                <hr className={classes.hrtop} />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid container direction="row">
-                        <Grid item>
-                            <Grid container justifyContent="space-between">
-                                <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatar}>
-                                        <img src={EarningIcon} alt="Notification" />
-                                    </Avatar>
-                                </Grid>
-                                <Grid item>
-                                    <div className={classes.cardTitle}>Manage Documents</div>
-                                </Grid>
+                                <div className={classes.planName}><h4>Create Statement Of Purpose (SOP)</h4></div>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -213,18 +222,19 @@ const EarningCard = ({ isLoading }) => {
                         <Grid item>
                             <Grid container justifyContent="space-between">
                                 <Grid item>
-                                    <div className={classes.cardText}>
-                                        Edit and manage your SOP, LOR and other documents easily !
+                                    <div className={classes.dayspending}>
+                                        <h4>Spring 2021</h4>
+                                        <div>Term</div>
                                     </div>
                                 </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item>
+                            <Grid container justifyContent="space-between">
                                 <Grid item>
-                                    <div className={classes.fabdiv}>
-                                        <Fab color="primary" aria-label="add" className={classes.fab}>
-                                            <AddIcon />
-                                        </Fab>
-                                        <Fab color="primary" aria-label="add" className={classes.fab}>
-                                            <VisibilityIcon>View</VisibilityIcon>
-                                        </Fab>
+                                    <div className={classes.dayspending2}>
+                                        <h4>Document Upload</h4>
+                                        <div>Stage</div>
                                     </div>
                                 </Grid>
                             </Grid>
@@ -236,8 +246,8 @@ const EarningCard = ({ isLoading }) => {
     );
 };
 
-EarningCard.propTypes = {
+PlanCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default EarningCard;
+export default PlanCard;

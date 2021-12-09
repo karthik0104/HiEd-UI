@@ -19,18 +19,18 @@ const utilities = {
     type: 'group',
     children: [
         {
-            id: 'util-typography',
+            id: 'plans',
             title: 'Plans',
             type: 'item',
-            url: '/utils/util-typography',
+            url: '/utils/plans',
             icon: icons.IconTypography,
             breadcrumbs: false
         },
         {
-            id: 'util-color',
+            id: 'documents',
             title: 'Documents',
             type: 'item',
-            url: '/utils/util-color',
+            url: '/utils/documents',
             icon: icons.IconPalette,
             breadcrumbs: false
         },
@@ -39,6 +39,14 @@ const utilities = {
             title: 'Universities',
             type: 'item',
             url: '/utils/util-shadow',
+            icon: icons.IconShadow,
+            breadcrumbs: false
+        },
+        {
+            id: 'util-discussions',
+            title: 'Discussions',
+            type: 'item',
+            url: '/utils/discussions',
             icon: icons.IconShadow,
             breadcrumbs: false
         },

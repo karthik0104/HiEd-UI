@@ -106,9 +106,26 @@ const FirebaseRegister = ({ ...others }) => {
         setLevel(strengthColor(temp));
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         changePassword('123456');
-    }, []);
+    }, []);*/
+
+    const Zoom = () => {
+        useEffect(() => {
+            const initialValue = document.body.style.zoom;
+    
+            // Change zoom level on mount
+            document.body.style.zoom = "90%";
+    
+            return () => {
+                // Restore default value
+                document.body.style.zoom = initialValue;
+            };
+        }, []);
+        return <></>;
+    };
+
+    Zoom();
 
     return (
         <>
@@ -163,8 +180,8 @@ const FirebaseRegister = ({ ...others }) => {
 
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    email: '',
+                    password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({

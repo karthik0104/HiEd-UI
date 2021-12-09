@@ -21,11 +21,13 @@ import FileCopyTwoToneIcon from '@material-ui/icons/FileCopyOutlined';
 import PictureAsPdfTwoToneIcon from '@material-ui/icons/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@material-ui/icons/ArchiveOutlined';
 
+import DocUtilsForms from '../../utilities/DocForms';
+
 // style constant
 const useStyles = makeStyles((theme) => ({
     card: {
-        //backgroundColor: theme.palette.primary[800],
-        backgroundColor: "#fafafa",
+        //backgroundColor: theme.palette.primary.dark,
+        backgroundColor: "#fff",
         color: '#fff',
         overflow: 'hidden',
         position: 'relative',
@@ -36,11 +38,11 @@ const useStyles = makeStyles((theme) => ({
             position: 'absolute',
             width: '210px',
             height: '210px',
-            background: theme.palette.primary.dark,
+            background: theme.palette.primary[800],
             borderRadius: '50%',
             top: '-85px',
             right: '-95px',
-            opacity: 0.1,
+            opacity: 0.2,
             [theme.breakpoints.down('xs')]: {
                 top: '-105px',
                 right: '-140px'
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
             position: 'absolute',
             width: '210px',
             height: '210px',
-            background: theme.palette.secondary[200],
+            background: theme.palette.primary[800],
             borderRadius: '50%',
             top: '-125px',
             right: '-15px',
@@ -68,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         ...theme.typography.commonAvatar,
         ...theme.typography.largeAvatar,
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.primary[800],
         marginTop: '8px'
     },
     avatarRight: {
@@ -115,8 +117,8 @@ const useStyles = makeStyles((theme) => ({
         width: '260px',
         maxWidth: '260px',
         borderWidth: '2px',
-        borderColor: theme.palette.primary.light,
-        opacity: '30%'
+        borderColor: theme.palette.secondary[200],
+        opacity: '50%'
     },
     questionmark: {
         display: 'flex',
@@ -143,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         right: '0',
         top: '0',
-        zIndex: '5000'
+        zIndex: '500'
     },
     fab: {
         margin: '5px'
@@ -152,7 +154,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '10px',
         fontWeight: 'bold',
         letterSpacing: '1px',
-        color: 'darkorange'
+        color: 'orange'
     },
     hrtop: {
         color: 'orange',
@@ -162,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const UniversityCard = ({ isLoading }) => {
+const ManageDocsCard = ({ isLoading }) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -198,7 +200,7 @@ const UniversityCard = ({ isLoading }) => {
                                     </Avatar>
                                 </Grid>
                                 <Grid item>
-                                    <div className={classes.cardTitle}>Explore Universities</div>
+                                    <div className={classes.cardTitle}>Manage Documents</div>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -217,19 +219,21 @@ const UniversityCard = ({ isLoading }) => {
                             <Grid container justifyContent="space-between">
                                 <Grid item>
                                     <div className={classes.cardText}>
-                                        Get cutoff, fees, and other University details at yoru fingertips !
+                                        Edit and manage your SOP, LOR and other documents easily !
                                     </div>
                                 </Grid>
-                                
+                                <Grid item>
+                                    <div className={classes.fabdiv}>
+                                        <Fab color="primary" aria-label="add" className={classes.fab}>
+                                            <DocUtilsForms />
+                                        </Fab>
+                                        <Fab color="primary" aria-label="add" className={classes.fab}>
+                                            <VisibilityIcon>View</VisibilityIcon>
+                                        </Fab>
+                                    </div>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid item>
-                        <div className={classes.fabdiv}>
-                            <Fab color="primary" aria-label="add" className={classes.fab}>
-                                <VisibilityIcon>View</VisibilityIcon>
-                            </Fab>
-                        </div>
                     </Grid>
                 </MainCard>
             )}
@@ -237,8 +241,8 @@ const UniversityCard = ({ isLoading }) => {
     );
 };
 
-UniversityCard.propTypes = {
+ManageDocsCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default UniversityCard;
+export default ManageDocsCard;

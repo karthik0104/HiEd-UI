@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 // material-ui
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 
 // project imports
-import EarningCard from './EarningCard';
-import PopularCard from './PopularCard';
-import PopularCardSocial from './PopularCardSocial';
-import TotalOrderLineChartCard from './TotalOrderLineChartCard';
+import MakePlansCard from './MakePlansCard';
+import TopNewsCard from './TopNewsCard';
+import DiscussionThreadCard from './DiscussionThreadCard';
+import ManageDocsCard from './ManageDocsCard';
 import UniversityCard from './UniversityCard';
 import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
@@ -27,10 +27,10 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <EarningCard isLoading={isLoading} />
+                        <MakePlansCard isLoading={isLoading} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <TotalOrderLineChartCard isLoading={isLoading} />
+                        <ManageDocsCard isLoading={isLoading} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <UniversityCard isLoading={isLoading} />
@@ -40,12 +40,12 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={8}>
-                        <TotalGrowthBarChart isLoading={isLoading} />
+                        <DiscussionThreadCard isLoading={isLoading} />
                         <br />
-                        <PopularCardSocial isLoading={isLoading} />
+                        <TotalGrowthBarChart isLoading={isLoading} />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <PopularCard isLoading={isLoading} />
+                        <TopNewsCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
             </Grid>

@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 
 // ===========================|| SKELETON EARNING CARD ||=========================== //
 
-const EarningCard = () => {
+const SkeletonMakePlansCard = () => {
     const classes = useStyles();
     return (
         <Card>
@@ -43,4 +43,4 @@ const EarningCard = () => {
     );
 };
 
-export default EarningCard;
+export default SkeletonMakePlansCard;

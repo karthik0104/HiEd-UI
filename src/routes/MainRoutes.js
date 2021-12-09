@@ -9,11 +9,16 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-const UtilsForms = Loadable(lazy(() => import('views/utilities/Forms')));
+const CreatePlanForm = Loadable(lazy(() => import('views/utilities/CreatePlanForm')));
 const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
 const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
+
+const ListPlans = Loadable(lazy(() => import('views/utilities/ListPlans')));
+const ListDocs = Loadable(lazy(() => import('views/utilities/ListDocs')));
+const Plan = Loadable(lazy(() => import('views/utilities/Plan')));
+const DiscussionThreads = Loadable(lazy(() => import('views/utilities/DiscussionThreads')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
@@ -34,7 +39,23 @@ const MainRoutes = {
         },
         {
             path: '/utils/form',
-            element: <UtilsForms />
+            element: <CreatePlanForm />
+        },
+        {
+            path: '/utils/plans',
+            element: <ListPlans />
+        },
+        {
+            path: '/utils/documents',
+            element: <ListDocs />
+        },
+        {
+            path: '/utils/discussions',
+            element: <DiscussionThreads />
+        },
+        {
+            path: '/utils/plan',
+            element: <Plan />
         },
         {
             path: '/utils/util-typography',

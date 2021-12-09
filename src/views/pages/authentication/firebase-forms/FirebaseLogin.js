@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // material-ui
 import { makeStyles } from '@material-ui/styles';
@@ -78,10 +78,15 @@ const useStyles = makeStyles((theme) => ({
 
 const FirebaseLogin = (props, { ...others }) => {
     const classes = useStyles();
+    let navigate = useNavigate();
 
     const customization = useSelector((state) => state.customization);
     const scriptedRef = useScriptRef();
     const [checked, setChecked] = React.useState(true);
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    const axios = require('axios');
 
     const googleHandler = async () => {
         console.error('Login');
@@ -94,6 +99,41 @@ const FirebaseLogin = (props, { ...others }) => {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const Zoom = () => {
+        useEffect(() => {
+            const initialValue = document.body.style.zoom;
+    
+            // Change zoom level on mount
+            document.body.style.zoom = "90%";
+    
+            return () => {
+                // Restore default value
+                document.body.style.zoom = initialValue;
+            };
+        }, []);
+        return <></>;
+    };
+
+    Zoom();
+
+    const handleSignInResult = (res) => {
+        localStorage.setItem("HIED_TOKEN", res.data.token);
+        localStorage.setItem("HIED_LOCALE", res.data.locale);
+        let path = "/";
+        navigate(path);
+    };
+
+    function handleSignIn() {
+        axios.post("http://localhost:5344/user/login", {}, {
+            auth: {
+                username: email,
+                password: password
+            }
+        })
+            .then(res => handleSignInResult(res))
+            .catch(err => console.warn(err));
     };
 
     return (
@@ -148,8 +188,8 @@ const FirebaseLogin = (props, { ...others }) => {
 
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    email: '',
+                    password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
@@ -179,10 +219,10 @@ const FirebaseLogin = (props, { ...others }) => {
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
                                 type="email"
-                                value={values.email}
+                                value={email}
                                 name="email"
                                 onBlur={handleBlur}
-                                onChange={handleChange}
+                                onChange={e => setEmail(e.target.value)}
                                 label="Email Address / Username"
                                 inputProps={{
                                     classes: {
@@ -203,10 +243,10 @@ const FirebaseLogin = (props, { ...others }) => {
                             <OutlinedInput
                                 id="outlined-adornment-password-login"
                                 type={showPassword ? 'text' : 'password'}
-                                value={values.password}
+                                value={password}
                                 name="password"
                                 onBlur={handleBlur}
-                                onChange={handleChange}
+                                onChange={e => setPassword(e.target.value)}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
@@ -279,6 +319,7 @@ const FirebaseLogin = (props, { ...others }) => {
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
+                                    onClick={handleSignIn}
                                 >
                                     Sign in
                                 </Button>

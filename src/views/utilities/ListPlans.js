@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -27,6 +27,8 @@ import { LocalizationProvider } from "@material-ui/lab";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import PlanCard from "./PlanCard";
+import NewPlanCard from "./NewPlanCard";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         fontFamily: "inherit",
-        width: "300px",
+        width: "500px",
         border: "0",
         borderBottom: "2px solid purple",
         margin: "0px",
@@ -181,10 +183,14 @@ const useStyles = makeStyles((theme) => ({
         width: '70%',
         textAlign: 'center',
         marginTop: '15vh'
+    },
+
+    card: {
+        width: "100%"
     }
 }));
 
-const UtilsForms = ({ isLoading }) => {
+const ListPlans = ({ isLoading }) => {
     const classes = useStyles();
 
     const formik = useFormik({
@@ -220,7 +226,9 @@ const UtilsForms = ({ isLoading }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [value, setValue] = React.useState('1');
     const [selectedTab, setSelectedTab] = React.useState(0);
+    const [plans, setPlans] = React.useState([]);
     const tabCount = 3;
+    const axios = require('axios');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -255,13 +263,49 @@ const UtilsForms = ({ isLoading }) => {
         };
     }
 
+    function fetchUserPlans() {
+        axios({
+            method: 'get',
+            url: 'http://localhost:5344/plan/view/all',
+            headers: {
+                "x-access-tokens": localStorage.getItem("HIED_TOKEN")
+            }
+        })
+            .then(response => setPlans(response.data.plans))
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    }
 
+    useEffect(() => {
+        fetchUserPlans();
+    }, []);
 
     return (
         <div>
+            <h1>Plans</h1>
+            <br />
+
+            <Grid container spacing={gridSpacing}>
+                <Grid item xs={12}>
+                    <Grid container spacing={gridSpacing}>
+                        {plans.map(plan => (
+                            <>
+                                <Grid item lg={3} md={6} sm={6} xs={12}>
+                                    <PlanCard planName={plan.name}/>
+                                </Grid>
+                            </>))}
+                        <Grid item lg={3} md={6} sm={6} xs={12}>
+                            <NewPlanCard />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+
             <IconButton onClick={handleOpen}>
                 <AddIcon />
             </IconButton>
+
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
@@ -519,8 +563,8 @@ const UtilsForms = ({ isLoading }) => {
     );
 }
 
-UtilsForms.propTypes = {
+ListPlans.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default UtilsForms;
+export default ListPlans;
