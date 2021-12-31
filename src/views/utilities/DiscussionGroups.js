@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { makeStyles } from '@material-ui/styles';
 
 import MainCard from 'ui-component/cards/MainCard';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography, Autocomplete, TextField } from '@material-ui/core';
+import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography, Autocomplete, TextField, Paper } from '@material-ui/core';
 import { gridSpacing } from 'store/constant';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -26,6 +26,15 @@ import bulb from './../../assets/images/bulb.png';
 import { LocalizationProvider } from "@material-ui/lab";
 import DatePicker from "react-datepicker";
 
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { TableContainer } from "@material-ui/core";
+
+import { Link } from 'react-router-dom';
+
 import "react-datepicker/dist/react-datepicker.css";
 import PlanCard from "./PlanCard";
 import DiscussionThreadCard from "./DiscussionThreadCard";
@@ -33,6 +42,9 @@ import DiscussionThreadReplyCard from "./DiscussionThreadReplyCard";
 import DiscussionThreadAddReplyCard from "./DiscussionThreadAddReplyCard";
 import DiscussionThreadAddPostCard from "./DiscussionThreadAddPostCard";
 import DiscussionThreadTagsCard from "./DiscussionThreadTagsCard";
+import DiscussionGroupFavCard from "./DiscussionGroupFavCard";
+import DiscussionGroupSearchCard from "./DiscussionGroupSearchCard";
+import DiscussionGroupForm from "./DiscussionGroupForm";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -197,10 +209,24 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         marginBottom: '20px',
         width: '100px'
-    }
+    },
+    addReplyButton: {
+        float: 'left',
+        marginLeft: '-1px',
+        backgroundColor: theme.palette.secondary.dark,
+        color: 'white',
+        margin: '10px'
+    },
+    taskModal: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '600px'
+    },
 }));
 
-const DiscussionThreads = ({ isLoading }) => {
+const ListPlans = ({ isLoading }) => {
     const classes = useStyles();
 
     const formik = useFormik({
@@ -238,10 +264,32 @@ const DiscussionThreads = ({ isLoading }) => {
     const [selectedTab, setSelectedTab] = React.useState(0);
     const [plans, setPlans] = React.useState([]);
     const [discussionThreads, setDiscussionThreads] = React.useState([]);
+    const [rows, setRows] = React.useState([]);
+
     const tabCount = 3;
     const axios = require('axios');
-    const pathArray = window.location.pathname.split('/');
-    const groupId = pathArray[4];
+
+    function handleFetchDiscussionGroupsResult(data) {
+        setRows(data['discussion_groups']);
+    }
+
+    function fetchDiscussionGroups() {
+        axios({
+            method: 'get',
+            url: 'http://localhost:5344/social/discussion-group/view/all?page_number=1',
+            headers: {
+                "x-access-tokens": localStorage.getItem("HIED_TOKEN")
+            }
+        })
+            .then(response => handleFetchDiscussionGroupsResult(response.data))
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    }
+
+    useEffect(() => {
+        fetchDiscussionGroups();
+    }, []);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -276,42 +324,43 @@ const DiscussionThreads = ({ isLoading }) => {
         };
     }
 
-    function fetchGroupDiscussionThreads() {
-        axios({
-            method: 'get',
-            url: 'http://localhost:5344/social/discussion-threads/' + groupId,
-            headers: {
-                "x-access-tokens": localStorage.getItem("HIED_TOKEN")
-            }
-        })
-            .then(response => setDiscussionThreads(response.data.discussion_threads))
-            .catch(error => {
-                console.error('There was an error!', error);
-            });
-    }
-
     function handleRepliesToggle(id) {
         console.log(id);
     }
 
-    useEffect(() => {
-        fetchGroupDiscussionThreads();
-    }, []);
+    function handleOpenCreateGroup() {
+        setState({open: true});
+    }
 
+    
     return (
         <div>
-            <h2>Discussion Group - Michigan University Admissions</h2>
+            <h2>Discussion Groups</h2>
             <hr />
+
             <br />
 
-            <Button className={classes.newPostButton}>+ New Post</Button>
+            <div>
+                <Button className={classes.addReplyButton} onClick={handleOpenCreateGroup}>+ Create Group</Button>
+            </div>
+
+            <Modal
+                open={state.open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <div className={classes.taskModal}>
+                    <DiscussionGroupForm fetchDiscussionGroups={fetchDiscussionGroups} handleClose={handleClose} />
+                </div>
+            </Modal>
 
             <div>
                 <Grid container spacing={1}>
                     <Grid item xs={12}>
                         <Grid container spacing={1}>
                             <Grid item lg={3} md={6} sm={6} xs={12}>
-                                <DiscussionThreadTagsCard />
+                                <DiscussionGroupFavCard />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -322,7 +371,7 @@ const DiscussionThreads = ({ isLoading }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
                         <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <DiscussionThreadAddPostCard isLoading={false} groupId={groupId}/>
+                            <DiscussionGroupSearchCard />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -330,84 +379,50 @@ const DiscussionThreads = ({ isLoading }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
                         <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <h2>Posts</h2>
+
                         </Grid>
                     </Grid>
                 </Grid>
-                {((discussionThreads.length) ? null : (
-                    <>
-                        <br />
-                        There are no posts here in this group
-                    </>
-                ))}
-                <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                        <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <DiscussionThreadCard title="Test Post" content="This is just a test post !" />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                        <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <DiscussionThreadAddReplyCard />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                        <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <DiscussionThreadReplyCard />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                        <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <DiscussionThreadReplyCard />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <hr />
-                {discussionThreads.map(dt => (
-                    <>
-                        <Grid item xs={12}>
-                            <Grid container spacing={1}>
-                                <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadCard id={dt.id} title={dt.title} content={dt.content} handleRepliesToggle={handleRepliesToggle} showReplies={false} />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid container spacing={1}>
-                                <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadAddReplyCard />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid container spacing={1}>
-                                <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadReplyCard />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid container spacing={1}>
-                                <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadReplyCard />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <hr />
-                    </>))}
             </Grid>
+
+            <Paper className={classes.tablePaper}>
+                <TableContainer className={classes.tablecontainer}>
+                    <Table className={classes.table} aria-label="caption table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className={classes.tableHeadCell} align="left">ID</TableCell>
+                                <TableCell className={classes.tableHeadCell} align="left">Group Name</TableCell>
+                                <TableCell className={classes.tableHeadCell} align="left">Associated University (If Any)</TableCell>
+                                <TableCell className={classes.tableHeadCell} align="left"># Threads</TableCell>
+                                <TableCell className={classes.tableHeadCell} align="left"># Followers</TableCell>
+                                <TableCell className={classes.tableHeadCell} align="left">Created On</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.map(row => (
+                                <TableRow key={row.task_id}>
+                                    <TableCell className={classes.tableCell} align="left">
+                                        {row.id}
+                                    </TableCell>
+                                    <TableCell className={classes.tableCell} align="left">
+                                        <Link to={"/utils/discussions/group/" + row.id}><b>{row.name}</b></Link>
+                                    </TableCell>
+                                    <TableCell className={classes.tableCell} align="left">{row.university_name}</TableCell>
+                                    <TableCell className={classes.tableCell} align="left">{row.num_threads}</TableCell>
+                                    <TableCell className={classes.tableCell} align="left">{row.num_followers}</TableCell>
+                                    <TableCell className={classes.tableCell} align="left">31st December, 2021</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
         </div>
     );
 }
 
-DiscussionThreads.propTypes = {
+ListPlans.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default DiscussionThreads;
+export default ListPlans;

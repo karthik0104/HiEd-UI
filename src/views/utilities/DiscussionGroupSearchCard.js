@@ -255,7 +255,7 @@ const useStyles = makeStyles((theme) => ({
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const DiscussionThreadAddPostCard = ({ isLoading, groupId }) => {
+const DiscussionGroupSearchCard = ({ isLoading }) => {
     const axios = require('axios');
 
     const classes = useStyles();
@@ -281,8 +281,7 @@ const DiscussionThreadAddPostCard = ({ isLoading, groupId }) => {
 
     function handleSharePost() {
         socket.emit("message", {
-            "message_type": "add_thread", "user_id": 1, "title": title, "content": content, "groupId": groupId, "username": "karthik",
-            "user_autofollow": true
+            "message_type": "add_thread", "user_id": 1, "title": title, "content": content
         });
         
         setState({open: true});
@@ -364,7 +363,7 @@ const DiscussionThreadAddPostCard = ({ isLoading, groupId }) => {
                         </div>
                     </Modal>
                     <div className={classes.divcontent}>
-                        <h3>Share A Post</h3>
+                        <h3>Search Groups</h3>
                         <hr />
                         <div className={classes.addReplyTitleName}>
                             <b>Title</b>
@@ -377,21 +376,11 @@ const DiscussionThreadAddPostCard = ({ isLoading, groupId }) => {
                             floatingLabelText="MultiLine and FloatingLabel"
                             value={title}
                             onChange={e => setTitle(e.target.value)}
-                            rows={1}
-                        />
-                        <TextField
-                            className={classes.addReply}
-                            style={{ textAlign: 'left' }}
-                            hintText="Message Field"
-                            floatingLabelText="MultiLine and FloatingLabel"
-                            value={content}
-                            onChange={e => setContent(e.target.value)}
-                            multiline
                             rows={2}
                         />
                         <br />
                         <div>
-                            <Button className={classes.addReplyButton} onClick={handleSharePost}>Share</Button>
+                            <Button className={classes.addReplyButton} onClick={handleSharePost}>Go</Button>
                             <Attachment className={classes.postAttachment} />
                         </div>
                     </div>
@@ -402,8 +391,8 @@ const DiscussionThreadAddPostCard = ({ isLoading, groupId }) => {
     );
 };
 
-DiscussionThreadAddPostCard.propTypes = {
+DiscussionGroupSearchCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default DiscussionThreadAddPostCard;
+export default DiscussionGroupSearchCard;

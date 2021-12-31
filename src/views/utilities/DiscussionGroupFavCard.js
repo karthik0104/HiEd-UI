@@ -3,11 +3,10 @@ import React from 'react';
 
 // material-ui
 import { makeStyles } from '@material-ui/styles';
-import { Avatar, fabClasses, Grid, Menu, MenuItem, Typography, Button } from '@material-ui/core';
+import { Avatar, fabClasses, Grid, Menu, MenuItem, Typography, TextField, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import ThumbUp from '@material-ui/icons/ThumbUp';
-import Reply from '@material-ui/icons/Reply';
+import Attachment from '@material-ui/icons/Attachment'
 import IconButton from '@material-ui/core/IconButton'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
@@ -30,13 +29,17 @@ import AttachFile from "@material-ui/icons/AttachFile";
 // style constant
 const useStyles = makeStyles((theme) => ({
     card: {
-        backgroundColor: "#fff",
+        backgroundColor: "#FAFBF0",
         color: '#fff',
         overflow: 'hidden',
-        position: 'relative',
         boxShadow: theme.shadows[5],
-        opacity: '90%',
-        width: '1000px'
+        opacity: '100%',
+        width: '350px',
+    },
+    tagsContent: {
+        right: '30px',
+        top: '200px',
+        position: 'absolute',
     },
     content: {
         padding: '20px !important'
@@ -186,33 +189,34 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '95px',
     },
     divcontent: {
-        color: 'black',
-        marginTop: '-10px'
+        color: 'black'
     },
-    contentFooter: {
-        marginLeft: '0px'
+    vl: {
+        borderLeft: '6px solid green',
+        height: '90%',
+        float: 'left',
+        position: 'absolute',
+        top: '2px',
+        marginLeft: '-20px'
     },
-    likeButton: {
-        marginRight: '10px',
-        marginTop: '5px'
+    addReply: {
+        width: '900px'
     },
-    showReplyButton: {
-        float: 'right'
+    addReplyButton: {
+        float: 'left',
+        marginLeft: '-1px',
+        backgroundColor: theme.palette.primary.dark,
+        color: 'white',
+        margin: '10px'
     },
-    contentUsername: {
-        fontSize: '11px',
-        marginTop: '-12px',
-        color: theme.palette.secondary.dark,
-        fontWeight: 'bold'
-
-    },
-    textContent: {
-        marginTop: '-10px'
+    postAttachment: {
+        marginTop: '15px',
+        marginLeft: '5px'
     },
     tags: {
         color: "red",
         backgroundColor: theme.palette.orange.light,
-        fontSize: "10px",
+        fontSize: "12px",
         marginBottom: "10px",
         marginRight: "5px"
     },
@@ -221,7 +225,7 @@ const useStyles = makeStyles((theme) => ({
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const DiscussionThreadCard = ({ isLoading, id, title, content, handleRepliesToggle, showReplies }) => {
+const DiscussionGroupFavCard = ({ isLoading }) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -243,45 +247,29 @@ const DiscussionThreadCard = ({ isLoading, id, title, content, handleRepliesTogg
             {isLoading ? (
                 <SkeletonMakePlansCard />
             ) : (
-                <MainCard border={false} className={classes.card} contentClass={classes.content} elevation={16}>
+                <div className={classes.tagsContent}>
+                <h2>Favorites</h2>
+                <MainCard border={false} className={classes.card} contentClass={classes.content}>
                     <div className={classes.divcontent}>
-                        <h4>{title}</h4>
-                        <div className={classes.contentUsername}>
-                            kart_the_cat_2011
-                        </div>
-                        <hr />
-                        <br />
-                        <div className={classes.textContent}>
-                            {content}
-                        </div>
-                        <br />
                         <div>
                             <Button className={classes.tags}>Admission</Button>
                             <Button className={classes.tags}>Query</Button>
                             <Button className={classes.tags}>Process</Button>
-                        </div>
-
-                        <div className={classes.contentFooter}>
-                            <ThumbUp className={classes.likeButton} />
-                            <Reply className={classes.likeButton} />
-
-                            {showReplies ?
-                                <Button className={classes.showReplyButton} onClick={() => handleRepliesToggle(id)}>
-                                    Hide Replies
-                                </Button> :
-                                <Button className={classes.showReplyButton} onClick={() => handleRepliesToggle(id)}>
-                                    Show Replies (54)
-                                </Button>}
+                            <Button className={classes.tags}>Admission</Button>
+                            <Button className={classes.tags}>Query</Button>
+                            <Button className={classes.tags}>Process</Button>
                         </div>
                     </div>
+
                 </MainCard>
+                </div>
             )}
         </>
     );
 };
 
-DiscussionThreadCard.propTypes = {
+DiscussionGroupFavCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default DiscussionThreadCard;
+export default DiscussionGroupFavCard;

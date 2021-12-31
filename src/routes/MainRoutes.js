@@ -18,6 +18,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 const ListPlans = Loadable(lazy(() => import('views/utilities/ListPlans')));
 const ListDocs = Loadable(lazy(() => import('views/utilities/ListDocs')));
 const Plan = Loadable(lazy(() => import('views/utilities/Plan')));
+const DiscussionGroups = Loadable(lazy(() => import('views/utilities/DiscussionGroups')));
 const DiscussionThreads = Loadable(lazy(() => import('views/utilities/DiscussionThreads')));
 
 // sample page routing
@@ -51,6 +52,10 @@ const MainRoutes = {
         },
         {
             path: '/utils/discussions',
+            element: <DiscussionGroups />
+        },
+        {
+            path: '/utils/discussions/group/:groupId',
             element: <DiscussionThreads />
         },
         {
