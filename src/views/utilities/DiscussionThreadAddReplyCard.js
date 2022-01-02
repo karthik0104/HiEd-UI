@@ -209,7 +209,7 @@ const useStyles = makeStyles((theme) => ({
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const NewPlanCard = ({ isLoading }) => {
+const DiscussionThreadAddReplyCard = ({ isLoading, id }) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -252,8 +252,8 @@ const NewPlanCard = ({ isLoading }) => {
     );
 };
 
-NewPlanCard.propTypes = {
+DiscussionThreadAddReplyCard.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default NewPlanCard;
+export default DiscussionThreadAddReplyCard;

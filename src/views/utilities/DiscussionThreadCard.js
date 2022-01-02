@@ -190,11 +190,13 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '-10px'
     },
     contentFooter: {
-        marginLeft: '0px'
+        marginLeft: '0px',
+        marginBottom: '-10px'
     },
     likeButton: {
-        marginRight: '10px',
-        marginTop: '5px'
+        marginRight: '20px',
+        marginTop: '0px',
+        color: '#6B0486'
     },
     showReplyButton: {
         float: 'right'
@@ -221,8 +223,10 @@ const useStyles = makeStyles((theme) => ({
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const DiscussionThreadCard = ({ isLoading, id, title, content, handleRepliesToggle, showReplies }) => {
+const DiscussionThreadCard = (props) => {
     const classes = useStyles();
+
+    const [showReplies, setShowReplies] = React.useState(props.showReplies);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -240,19 +244,19 @@ const DiscussionThreadCard = ({ isLoading, id, title, content, handleRepliesTogg
 
     return (
         <>
-            {isLoading ? (
+            {props.isLoading ? (
                 <SkeletonMakePlansCard />
             ) : (
                 <MainCard border={false} className={classes.card} contentClass={classes.content} elevation={16}>
                     <div className={classes.divcontent}>
-                        <h4>{title}</h4>
+                        <h4>{props.title}</h4>
                         <div className={classes.contentUsername}>
                             kart_the_cat_2011
                         </div>
                         <hr />
                         <br />
                         <div className={classes.textContent}>
-                            {content}
+                            {props.content}
                         </div>
                         <br />
                         <div>
@@ -262,14 +266,18 @@ const DiscussionThreadCard = ({ isLoading, id, title, content, handleRepliesTogg
                         </div>
 
                         <div className={classes.contentFooter}>
-                            <ThumbUp className={classes.likeButton} />
-                            <Reply className={classes.likeButton} />
+                            <Button>
+                                <ThumbUp className={classes.likeButton} />
+                            </Button>
+                            <Button onClick={() => props.toggleAddReplyCard(props.id)}>
+                                <Reply className={classes.likeButton} />
+                            </Button>
 
-                            {showReplies ?
-                                <Button className={classes.showReplyButton} onClick={() => handleRepliesToggle(id)}>
+                            {props.showReplies ?
+                                <Button className={classes.showReplyButton} onClick={() => props.handleRepliesToggle(props.id)}>
                                     Hide Replies
                                 </Button> :
-                                <Button className={classes.showReplyButton} onClick={() => handleRepliesToggle(id)}>
+                                <Button className={classes.showReplyButton} onClick={() => props.handleRepliesToggle(props.id)}>
                                     Show Replies (54)
                                 </Button>}
                         </div>

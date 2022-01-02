@@ -281,7 +281,7 @@ const DiscussionThreadAddPostCard = ({ isLoading, groupId }) => {
 
     function handleSharePost() {
         socket.emit("message", {
-            "message_type": "add_thread", "user_id": 1, "title": title, "content": content, "groupId": groupId, "username": "karthik",
+            "message_type": "add_thread", "user_id": 1, "title": title, "content": content, "group_id": groupId, "username": "karthik",
             "user_autofollow": true
         });
         

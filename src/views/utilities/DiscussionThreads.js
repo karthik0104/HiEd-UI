@@ -238,6 +238,8 @@ const DiscussionThreads = ({ isLoading }) => {
     const [selectedTab, setSelectedTab] = React.useState(0);
     const [plans, setPlans] = React.useState([]);
     const [discussionThreads, setDiscussionThreads] = React.useState([]);
+    const [showRepliesMap, setShowRepliesMap] = React.useState({});
+
     const tabCount = 3;
     const axios = require('axios');
     const pathArray = window.location.pathname.split('/');
@@ -276,6 +278,16 @@ const DiscussionThreads = ({ isLoading }) => {
         };
     }
 
+    function stringifyValue(value) {
+        return '' + value;
+    }
+
+    function handleFetchGroupDiscussionThreadsResponse(data) {
+        setDiscussionThreads(data.discussion_threads);
+
+        data.discussion_threads.map(dt => (showRepliesMap[stringifyValue(dt.id)] = false));
+    }
+
     function fetchGroupDiscussionThreads() {
         axios({
             method: 'get',
@@ -284,7 +296,7 @@ const DiscussionThreads = ({ isLoading }) => {
                 "x-access-tokens": localStorage.getItem("HIED_TOKEN")
             }
         })
-            .then(response => setDiscussionThreads(response.data.discussion_threads))
+            .then(response => handleFetchGroupDiscussionThreadsResponse(response.data))
             .catch(error => {
                 console.error('There was an error!', error);
             });
@@ -292,6 +304,11 @@ const DiscussionThreads = ({ isLoading }) => {
 
     function handleRepliesToggle(id) {
         console.log(id);
+    }
+
+    function toggleAddReplyCard(addReplyId) {
+        var strAddReplyId = stringifyValue(addReplyId);
+        setShowRepliesMap({[strAddReplyId] : !showRepliesMap[strAddReplyId]});
     }
 
     useEffect(() => {
@@ -322,7 +339,7 @@ const DiscussionThreads = ({ isLoading }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
                         <Grid item lg={3} md={6} sm={6} xs={12}>
-                            <DiscussionThreadAddPostCard isLoading={false} groupId={groupId}/>
+                            <DiscussionThreadAddPostCard isLoading={false} groupId={groupId} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -374,31 +391,17 @@ const DiscussionThreads = ({ isLoading }) => {
                         <Grid item xs={12}>
                             <Grid container spacing={1}>
                                 <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadCard id={dt.id} title={dt.title} content={dt.content} handleRepliesToggle={handleRepliesToggle} showReplies={false} />
+                                    <DiscussionThreadCard id={dt.id} title={dt.title} content={dt.content} handleRepliesToggle={handleRepliesToggle} toggleAddReplyCard={toggleAddReplyCard} showAddReply={(stringifyValue(dt.id) in showRepliesMap) ? showRepliesMap[stringifyValue(dt.id)] : false} showReplies={false} />
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12}>
+                        {showRepliesMap[stringifyValue(dt.id)] ? (<Grid item xs={12}>
                             <Grid container spacing={1}>
                                 <Grid item lg={3} md={6} sm={6} xs={12}>
                                     <DiscussionThreadAddReplyCard />
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid container spacing={1}>
-                                <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadReplyCard />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid container spacing={1}>
-                                <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadReplyCard />
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        </Grid>) : null}
                         <hr />
                     </>))}
             </Grid>
