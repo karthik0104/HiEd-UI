@@ -9,6 +9,8 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
+import { socket } from 'common';
+
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonMakePlansCard from 'ui-component/cards/Skeleton/MakePlansCard';
@@ -209,10 +211,11 @@ const useStyles = makeStyles((theme) => ({
 
 //= ==========================|| DASHBOARD DEFAULT - EARNING CARD ||===========================//
 
-const DiscussionThreadAddReplyCard = ({ isLoading, id }) => {
+const DiscussionThreadAddReplyCard = (props) => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [content, setContent] = React.useState('');
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -226,9 +229,26 @@ const DiscussionThreadAddReplyCard = ({ isLoading, id }) => {
         console.log(name);
     };
 
+    socket.on("message", (data) => {
+        setContent('');
+
+        if ((typeof data !== "string") && ("message_type" in data) && (data["message_type"] === "similar_words")) {
+
+        }
+    });
+
+    function handleReply(id) {
+        socket.emit("message", {
+            "message_type": "add_thread_reply", "user_id": 1, "content": content, "username": "karthik", "discussion_thread_id": id,
+            "user_autofollow": true
+        });
+
+        props.hideAddReplyCard(props.id);
+    }
+
     return (
         <>
-            {isLoading ? (
+            {props.isLoading ? (
                 <SkeletonMakePlansCard />
             ) : (
                 <MainCard border={false} className={classes.card} contentClass={classes.content}>
@@ -242,8 +262,10 @@ const DiscussionThreadAddReplyCard = ({ isLoading, id }) => {
                             floatingLabelText="MultiLine and FloatingLabel"
                             multiline
                             rows={2}
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
                         />
-                        <Button className={classes.addReplyButton}>Post</Button>
+                        <Button className={classes.addReplyButton} onClick={() => handleReply(props.id)}>Post</Button>
                     </div>
                     
                 </MainCard>

@@ -311,6 +311,11 @@ const DiscussionThreads = ({ isLoading }) => {
         setShowRepliesMap({[strAddReplyId] : !showRepliesMap[strAddReplyId]});
     }
 
+    function hideAddReplyCard(addReplyId) {
+        var strAddReplyId = stringifyValue(addReplyId);
+        setShowRepliesMap({[strAddReplyId] : false});
+    }
+
     useEffect(() => {
         fetchGroupDiscussionThreads();
     }, []);
@@ -398,7 +403,7 @@ const DiscussionThreads = ({ isLoading }) => {
                         {showRepliesMap[stringifyValue(dt.id)] ? (<Grid item xs={12}>
                             <Grid container spacing={1}>
                                 <Grid item lg={3} md={6} sm={6} xs={12}>
-                                    <DiscussionThreadAddReplyCard />
+                                    <DiscussionThreadAddReplyCard id={dt.id} hideAddReplyCard={hideAddReplyCard} showAddReply={(stringifyValue(dt.id) in showRepliesMap) ? showRepliesMap[stringifyValue(dt.id)] : false} />
                                 </Grid>
                             </Grid>
                         </Grid>) : null}
